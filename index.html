@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Parking UI</title>
+    <style>
+        body { font-family: Arial; background: #f4f4f4; padding: 20px; }
+        .container { background: white; padding: 20px; border-radius: 8px; max-width: 400px; }
+        input { width: 100%; margin: 10px 0; padding: 8px; }
+        button { background: #28a745; color: white; border: none; padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Parking Request</h2>
+        <input type="text" id="name" placeholder="Owner Name">
+        <input type="text" id="cnic" placeholder="CNIC">
+        <input type="text" id="vID" placeholder="Vehicle ID">
+        <input type="number" id="zone" placeholder="Preferred Zone (0-4)">
+        <button onclick="sendRequest()">Book Slot</button>
+        <p id="response"></p>
+    </div>
+
+    <script>
+        function sendRequest() {
+            const data = {
+                name: document.getElementById('name').value,
+                vID: document.getElementById('vID').value,
+                zone: parseInt(document.getElementById('zone').value)
+            };
+            fetch('/allocate', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+            .then(res => res.text())
+            .then(txt => document.getElementById('response').innerText = txt);
+        }
+    </script>
+</body>
+</html>
